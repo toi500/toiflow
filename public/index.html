@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToiFlow</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <flowise-fullchatbot id="chatbot-container"></flowise-fullchatbot>
+    <script type="module">
+      import Chatbot from "./dist/web.js"; // Use the Flowise Chatbot library
+
+      let configToken;
+
+      async function getIpAddress() {
+        try {
+          const response = await fetch("https://api.ipify.org?format=json"); // Get the user's IP address
+          const data = await response.json();
+          return data.ip;
+        } catch (error) {
+          console.error("Error fetching IP address:", error);
+          return "unknown";
+        }
+      }
+
+      async function getConfig() {
+        try {
+          const response = await fetch('/api/config');
+          if (!response.ok) {
+            throw new Error('Failed to fetch config');
+          }
+          const config = await response.json();
+          configToken = config.token;
+          return config;
+        } catch (error) {
+          console.error("Error fetching config:", error);
+          return {};
+        }
+      }
+
+      async function initializeChatbot() {
+        try {
+          const ipAddress = await getIpAddress();
+          const config = await getConfig();
+
+          if (!config.token) {
+            throw new Error('Failed to retrieve configuration token');
+          }
+
+          Chatbot.initFull({
+            chatflowid: config.token,
+            apiHost: window.location.origin,
+            theme: {
+              chatWindow: {
+                fontSize: 16,
+                welcomeMessage: "I am toi500, your girly AI friend!",
+                clearChatOnReload: true,
+              },
+            },
+            chatflowConfig: {
+              ...config.chatflowConfig,
+              vars: {
+                IP_ADDRESS: ipAddress, // Add IP_ADDRESS variable to be used in custom too
+              },
+              systemMessage: 'Talk to the user as if you were a maid in a cafe in Tokyo, referring to them as Master.',  // Add the new system message
+            },
+            streaming: true,
+            eventSource: true // Enable server-sent events for streaming responses
+          });
+
+          document.getElementById("chatbot-container").style.display = "block";
+        } catch (error) {
+          console.error("Error initializing chatbot:", error);
+          alert("Error initializing chatbot. Please check your configuration and try again.");
+        }
+      }
+
+      window.addEventListener('load', initializeChatbot);
+    </script>
+  </body>
+</html>
