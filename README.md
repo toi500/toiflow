@@ -1,6 +1,6 @@
 # ToiFlow: A Secure Flowise Chatbot Proxy
 
-ToiFlow provides a secure proxy for hosting the [Flowise chatbot](https://github.com/FlowiseAI/FlowiseChatEmbed), allowing users to maintain all features of the native Flowise chatbot while enhancing security for public embed chatbots.
+ToiFlow provides a secure proxy for hosting the [Flowise chatbot](https://github.com/FlowiseAI/FlowiseChatEmbed), allowing users to maintain all features of the native Flowise chatbot while enhancing security for the public embed chatbot.
 
 https://github.com/user-attachments/assets/a4de560f-1395-4cd5-91f6-86f1aab002ca
 
@@ -62,8 +62,8 @@ Choose the option that best fits your security requirements and deployment envir
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/toi500/ToiFlow.git
-   cd ToiFlow
+   git clone https://github.com/toi500/toiflow.git
+   cd toiflow
    ```
 
 2. Install the dependencies:
@@ -73,10 +73,10 @@ Choose the option that best fits your security requirements and deployment envir
    ```
 
 3. Create a `.env` file in the root directory and add your Flowise API credentials:
-
-   ```plaintext
-CHATFLOW_ID=your_chatflow_id_here
-API_HOST=your_flowise_api_host_here
+   
+   ```bash
+   CHATFLOW_ID=your_chatflow_id_here
+   API_HOST=your_flowise_api_host_here
    ```
 
 4. Start the server:
@@ -124,8 +124,6 @@ Users can customize the Flowise chatbot's appearance and behavior by modifying t
 
 ## Advanced Features
 
-- **Streaming Responses**: The server supports server-sent events for real-time streaming of chatbot responses.
-- **File Upload**: The chatbot configuration includes support for file uploads, which can be enabled or disabled as needed.
 - **Custom Variables**: The setup allows for passing custom variables (IP_ADDRESS) to the chatbot flow via custom tools. More about this [here](https://github.com/toi500/static/issues/1).
 
 
@@ -152,4 +150,6 @@ The `web.js` file is subject to the MIT License as specified by FlowiseAI.
 
 Ensure that the `.env` file is not shared or committed to version control to keep sensitive data secure. Always use HTTPS in production environments to encrypt data in transit. ToiFlow is not officially associated with Flowise and is an independent implementation for enhanced security.
 
-**Users are encouraged to fork the project and adapt it to their specific needs and use cases. Please note that ongoing support or updates should not be expected.**
+Users are encouraged to fork the project and adapt it to their specific needs and use cases. Please note that ongoing support or updates should not be expected.
+
+**Made with ❤️ by @toi500**
