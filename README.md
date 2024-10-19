@@ -2,7 +2,7 @@
 
 ToiFlow provides a secure proxy for hosting the [Flowise chatbot](https://github.com/FlowiseAI/FlowiseChatEmbed), allowing users to maintain all features of the native Flowise chatbot while enhancing security for the public embed chatbot.
 
-https://github.com/user-attachments/assets/a4de560f-1395-4cd5-91f6-86f1aab002ca
+https://github.com/user-attachments/assets/9f52cb53-6058-4ba3-b21b-797a1a66a188
 
 ## Features
 
@@ -122,7 +122,9 @@ Choose the option that best fits your security requirements and deployment envir
 
 Users can customize the Flowise chatbot's appearance and behavior by modifying the [Flowise script settings](https://docs.flowiseai.com/using-flowise/embed#chatflow-config) in the index.html file and the style of the chatbot (web.js file) following [this guide](https://docs.flowiseai.com/using-flowise/embed#custom-modificaton).
 
-## Advanced Features
+![image](https://github.com/user-attachments/assets/e00e3f94-e5f4-4abe-a6f0-ee8355b613d8)
+
+## Other Features
 
 - **Custom Variables**: The setup allows for passing custom variables (IP_ADDRESS) to the chatbot flow via custom tools. More about this [here](https://github.com/toi500/static/issues/1).
 
