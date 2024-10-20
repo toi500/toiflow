@@ -13,7 +13,7 @@ https://github.com/user-attachments/assets/9f52cb53-6058-4ba3-b21b-797a1a66a188
 - **Proxy Server**: All requests are routed through a secure proxy server, adding an extra layer of protection.
 - **Streamed Responses**: Supports streamed responses for real-time interactions.
 - **IP Address Integration**: Automatically fetches and includes the user's IP address in chatbot interactions. This is useful for custom tools that require the user's IP address. More about this [here](https://github.com/toi500/static/issues/1).
-
+- **Progressive Web App (PWA) Support**: ToiFlow now functions as a PWA (Progressive Web App).
 
 ## Chatbot Library Options
 
@@ -92,6 +92,7 @@ Choose the option that best fits your security requirements and deployment envir
 1. Access the chatbot interface at `http://localhost:3000` (or your deployed URL).
 2. The chatbot will automatically initialize with secure configurations.
 3. Interact with the chatbot as normal, with enhanced security.
+4. To use the PWA features, visit the site on a supported browser and look for the "Add to Home Screen" option.
 
 ## Technical Details
 
@@ -124,15 +125,41 @@ Users can customize the Flowise chatbot's appearance and behavior by modifying t
 
 ![image](https://github.com/user-attachments/assets/e00e3f94-e5f4-4abe-a6f0-ee8355b613d8)
 
+## Progressive Web App (PWA) Features
+
+ToiFlow uses Progressive Web App technology to provide an enhanced user experience:
+
+- **Home Screen Installation**: Users can add ToiFlow to their home screens or app drawers for quick access and a standalone app experience.
+- **Cross-Platform Compatibility**: Works seamlessly on mobile (iOS and Android) and desktop (Windows, macOS, Linux) devices.
+- **App-like Experience**: Runs in its own window without browser UI, offering a more immersive interaction.
+- **Customizable Icons**: The app icon can be tailored for different platforms and sizes, enhancing brand recognition.
+
+![PWA Installation](https://github.com/user-attachments/assets/fb75a022-b76d-4f23-8fce-3d00ea831b94)
+
+### Customizing PWA Appearance
+
+To personalize the PWA for your brand:
+
+1. Replace the icon files (`icon-192x192.png` and `icon-512x512.png`) in the `public` directory with your own branded icons.
+2. Update the `manifest.json` file to reflect your app's name, colors, and other metadata.
+3. Modify the PWA-related meta tags in `index.html` to match your branding.
+
+### Installing the PWA
+
+Users can install the ToiFlow PWA using the following methods:
+- On desktop: Click the install button in the browser's address bar.
+- On mobile: Use the "Add to Home Screen" option in the browser menu.
+
+
 ## Other Features
 
 - **Custom Variables**: The setup allows for passing custom variables (IP_ADDRESS) to the chatbot flow via custom tools. More about this [here](https://github.com/toi500/static/issues/1).
-
 
 ## Troubleshooting
 
 - If the chatbot fails to initialize, check the browser console for error messages.
 - Ensure that the `.env` file is properly configured with valid CHATFLOW_ID and API_HOST values.
+- For PWA-related issues, make sure your server is configured to serve the necessary files (manifest.json, service-worker.js, and icons) correctly.
 
 ## License
 
