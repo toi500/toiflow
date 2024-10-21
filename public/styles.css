@@ -9,12 +9,3 @@ body {
     margin: 0;
     background-color: #f0f2f5;
 }
-
-h1 {
-    color: #333;
-    margin-bottom: 1.5rem;
-}
-
-#chatbot-container {
-    display: none;
-}

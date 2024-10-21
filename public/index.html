@@ -19,14 +19,13 @@
   </head>
   <body>
     <flowise-fullchatbot id="chatbot-container"></flowise-fullchatbot>
-    <script type="module">
-      import Chatbot from "./dist/web.js"; // Use the Flowise Chatbot library
-
-      let configToken;
+    <script type="module" async>
+      import Chatbot from "./dist/web.js";
 
       async function getIpAddress() {
         try {
-          const response = await fetch("https://api.ipify.org?format=json"); // Get the user's IP address
+          const response = await fetch("https://api.ipify.org?format=json");
+          if (!response.ok) throw new Error('Failed to fetch IP');
           const data = await response.json();
           return data.ip;
         } catch (error) {
@@ -38,42 +37,34 @@
       async function getConfig() {
         try {
           const response = await fetch('/api/config');
-          if (!response.ok) {
-            throw new Error('Failed to fetch config');
-          }
+          if (!response.ok) throw new Error('Failed to fetch config');
           const config = await response.json();
-          configToken = config.token;
           return config;
         } catch (error) {
           console.error("Error fetching config:", error);
-          return {};
+          throw error;
         }
       }
 
       async function initializeChatbot() {
         try {
-          const ipAddress = await getIpAddress();
-          const config = await getConfig();
+          const [ipAddress, config] = await Promise.all([getIpAddress(), getConfig()]);
+          if (!config?.token) throw new Error('Failed to retrieve configuration token');
 
-          if (!config.token) {
-            throw new Error('Failed to retrieve configuration token');
-          }
           Chatbot.initFull({
             chatflowid: config.token,
             apiHost: window.location.origin,
             theme: {
               chatWindow: {
-                fontSize: 16, // Set the font size
-                welcomeMessage: "I am toi500, your girly AI friend!", // Add the new welcome message
-                clearChatOnReload: true, // Add this line to clear the chat on reload
+                fontSize: 16,
+                welcomeMessage: "I am toi500, your girly AI friend!",
+                clearChatOnReload: true,
               },
             },
             chatflowConfig: {
               ...config.chatflowConfig,
-              vars: {
-                IP_ADDRESS: ipAddress, // Add IP_ADDRESS variable to be used in custom tools
-              },
-              systemMessage: 'Talk to the user as if you were a maid in a cafe in Tokyo, referring to them as Master.',  // Override the system message
+              vars: { IP_ADDRESS: ipAddress },
+              systemMessage: 'Talk to the user as if you were a maid in a cafe in Tokyo, referring to them as Master.',
             },
             streaming: true,
             eventSource: true

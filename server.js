@@ -1,6 +1,6 @@
+const { randomBytes } = require('crypto');
 const express = require("express");
 const axios = require('axios');
-const crypto = require('crypto');
 require("dotenv").config();
 
 const app = express();
@@ -19,17 +19,13 @@ app.get('/api/config', (req, res) => {
     return res.status(500).json({ error: 'CHATFLOW_ID not set in environment variables' });
   }
   
-  const token = crypto.randomBytes(16).toString('hex'); // Generate a random token for the chatflow
+  const token = randomBytes(16).toString('hex');
   chatflowMap.set(token, chatflowId);
   
   res.json({
-    token: token,
+    token,
     apiHost: process.env.API_HOST,
-    chatflowConfig: {
-      fileUpload: {
-        enabled: true,
-      }
-    }
+    chatflowConfig: { fileUpload: { enabled: true } }
   });
 });
 
@@ -42,7 +38,7 @@ app.use('/api/v1/:endpoint/:token', async (req, res) => {
   }
 
   const method = req.method.toLowerCase();
-  const url = `${process.env.API_HOST}/api/v1/${endpoint}/${chatflowId}`; // Construct the URL for the Flowise API
+  const url = `${process.env.API_HOST}/api/v1/${endpoint}/${chatflowId}`;
 
   try {
     if (endpoint === 'prediction') {
@@ -52,33 +48,18 @@ app.use('/api/v1/:endpoint/:token', async (req, res) => {
         'Connection': 'keep-alive'
       });
 
-      const response = await axios({
-        method: 'post',
-        url: url,
-        data: req.body,
-        responseType: 'stream'
-      });
-
-      response.data.on('data', (chunk) => {
-        res.write(chunk);
-      });
-
-      response.data.on('end', () => {
-        res.end();
-      });
+      const response = await axios.post(url, req.body, { responseType: 'stream' });
+      response.data.pipe(res);
     } else {
       const axiosConfig = {
-        method: method,
-        url: url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        data: method !== 'get' ? req.body : undefined,
-        params: method === 'get' ? req.query : undefined,
+        method,
+        url,
+        headers: { 'Content-Type': 'application/json' },
+        ...(method !== 'get' ? { data: req.body } : { params: req.query }),
       };
 
-      const response = await axios(axiosConfig);
-      res.json(response.data);
+      const { data } = await axios(axiosConfig);
+      res.json(data);
     }
   } catch (error) {
     console.error(`Error calling ${endpoint} API:`, error);
