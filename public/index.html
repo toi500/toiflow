@@ -64,7 +64,7 @@
             theme: {
               chatWindow: {
                 fontSize: 16, // Set the font size
-                welcomeMessage: "I am toi500, your girly AI friend!", // Add the new welcome message
+                welcomeMessage: "Input your question!", // Add the new welcome message
                 clearChatOnReload: true, // Add this line to clear the chat on reload
               },
             },
@@ -73,11 +73,11 @@
               vars: {
                 IP_ADDRESS: ipAddress, // Add IP_ADDRESS variable to be used in custom tools
               },
-              systemMessage: 'Talk to the user as if you were a maid in a cafe in Tokyo, referring to them as Master.',  // Override the system message
+              //systemMessage: 'You help user with query data in neo4j knowledge graph data via cypher code.',  // Override the system message
             },
             streaming: true,
             eventSource: true
-          });
+            });
 
           document.getElementById("chatbot-container").style.display = "block";
         } catch (error) {
