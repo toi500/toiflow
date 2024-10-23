@@ -30,11 +30,20 @@ app.get('/api/config', (req, res) => {
 });
 
 app.get('/api/v1/chatflows-streaming', (req, res) => {
-  res.status(200).json({}); 
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+  });
+  res.end();
 });
 
 app.get('/api/v1/public-chatbotConfig', (req, res) => {
-  res.status(200).json({}); 
+  res.writeHead(200, {
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache'
+  });
+  res.end('{}');
 });
 
 app.use('/api/v1/:endpoint/:token', async (req, res) => {
