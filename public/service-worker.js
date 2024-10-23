@@ -9,6 +9,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
@@ -16,8 +17,8 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
-
-  if (event.request.url.includes('/api/')) {
+  if (event.request.url.includes('/api/') || 
+      event.request.url.includes('web.js')) {
     return;
   }
 

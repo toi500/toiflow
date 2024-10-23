@@ -1,24 +1,24 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>ToiFlow</title>
-    <link rel="stylesheet" href="styles.css" />
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     
     <!-- PWA meta tags -->
     <meta name="description" content="ToiFlow - A secure proxy for your Flowise Chatbot">
     <meta name="theme-color" content="#ffffff">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <meta name="display-mode" content="standalone">
     
     <!-- iOS support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="ToiFlow">
+    
+    <title>ToiFlow</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
   </head>
   <body>
     <flowise-fullchatbot id="chatbot-container"></flowise-fullchatbot>
@@ -84,15 +84,19 @@
     
     <!-- Service Worker Registration -->
     <script>
+      // Register service worker only once
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js')
-            .then(registration => {
-              console.log('Service Worker registered successfully:', registration.scope);
-            })
-            .catch(error => {
-              console.log('Service Worker registration failed:', error);
-            });
+        window.addEventListener('load', async () => {
+          try {
+            // Check if a service worker is already registered
+            const registration = await navigator.serviceWorker.getRegistration();
+            if (!registration) {
+              await navigator.serviceWorker.register('/service-worker.js');
+              console.log('Service Worker registered successfully');
+            }
+          } catch (error) {
+            console.error('Service Worker registration failed:', error);
+          }
         });
       }
     </script>
