@@ -45,13 +45,26 @@ app.get('/api/config', (req, res) => {
   res.json({ token }); 
 });
 
+app.options('/api/v1/chatflows-streaming', (req, res) => {
+  res.writeHead(200, {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Accept, Origin, X-Requested-With',
+    'Access-Control-Allow-Private-Network': 'true',
+    'Access-Control-Max-Age': '86400' // 24 hours
+  });
+  res.end();
+});
+
 app.get('/api/v1/chatflows-streaming', (req, res) => {
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive',
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Private-Network': 'true'
+    'Access-Control-Allow-Private-Network': 'true',
+    'Access-Control-Allow-Headers': 'Content-Type, Accept, Origin, X-Requested-With',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
   });
   
   res.write('data: connected\n\n');
@@ -89,7 +102,11 @@ app.use('/api/v1/:endpoint/:token', async (req, res) => {
         res.writeHead(200, {
           'Content-Type': 'text/event-stream',
           'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive'
+          'Connection': 'keep-alive',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Private-Network': 'true',
+          'Access-Control-Allow-Headers': 'Content-Type, Accept, Origin, X-Requested-With',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
         });
 
         const response = await axios.post(url, req.body, { responseType: 'stream' });
