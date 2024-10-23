@@ -52,7 +52,7 @@
       async function initializeChatbot() {
         try {
           const [ipAddress, config] = await Promise.all([getIpAddress(), getConfig()]);
-          if (!config?.token) throw new Error('Failed to retrieve configuration token');
+          if (!config?.token) throw new Error('JWT token not found. Please check your JWT_SECRET in .env file');
 
           Chatbot.initFull({
             chatflowid: config.token,
@@ -75,7 +75,7 @@
           document.getElementById("chatbot-container").style.display = "block";
         } catch (error) {
           console.error("Error initializing chatbot:", error);
-          alert("Error initializing chatbot. Please check your configuration and try again.");
+          alert("Configuration Error: Please ensure JWT_SECRET and CHATFLOW_ID are set in your .env file. Check the documentation for setup instructions.");
         }
       }
 
