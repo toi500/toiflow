@@ -5,7 +5,8 @@ const urlsToCache = [
   '/styles.css',
   '/dist/web.js',
   '/icon-192x192.png',
-  '/icon-512x512.png'
+  '/icon-512x512.png',
+  '/favicon.svg'
 ];
 
 self.addEventListener('install', event => {
@@ -16,6 +17,11 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
+
+  if (event.request.url.includes('/api/')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => response || fetch(event.request))

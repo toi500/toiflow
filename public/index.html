@@ -6,6 +6,9 @@
     <title>ToiFlow</title>
     <link rel="stylesheet" href="styles.css" />
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    
     <!-- PWA meta tags -->
     <meta name="description" content="ToiFlow - A secure proxy for your Flowise Chatbot">
     <meta name="theme-color" content="#ffffff">
@@ -62,12 +65,11 @@
               },
             },
             chatflowConfig: {
-              ...config.chatflowConfig,
               vars: { IP_ADDRESS: ipAddress },
               systemMessage: 'Talk to the user as if you were a maid in a cafe in Tokyo, referring to them as Master.',
             },
-            streaming: true,
-            eventSource: true
+            skipChatflowStreaming: true,
+            skipChatbotConfig: true
           });
 
           document.getElementById("chatbot-container").style.display = "block";

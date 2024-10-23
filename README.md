@@ -9,7 +9,7 @@ https://github.com/user-attachments/assets/9f52cb53-6058-4ba3-b21b-797a1a66a188
 - 🤖 **Full Flowise Functionality**: Retains all features of the native Flowise chatbot.
 - 🔒 **Enhanced Security**: Protects sensitive information like CHATFLOW_ID and API_HOST.
 - 🏠 **Self-Hosting**: Users can host their own web.js, maintaining control over their chatbot implementation.
-- 🔑 **Token-Based Authentication**: Implements a token system to mask the real CHATFLOW_ID.
+- 🔑 **JWT Authentication**: Uses JSON Web Tokens (JWT) to securely encrypt and verify the CHATFLOW_ID.
 - 🛡️ **Proxy Server**: All requests are routed through a secure proxy server, adding an extra layer of protection.
 - 🌊 **Streamed Responses**: Supports streamed responses for real-time interactions.
 - 🌐 **IP Address Integration**: Automatically fetches and includes the user's IP address in chatbot interactions. This is useful for custom tools that require the user's IP address. More about this [here](https://github.com/toi500/static/issues/1).
@@ -77,6 +77,13 @@ Choose the option that best fits your security requirements and deployment envir
    ```bash
    CHATFLOW_ID=your_chatflow_id_here
    API_HOST=your_flowise_api_host_here
+   JWT_SECRET=your_long_random_string_here  # At least 32 characters
+   ```
+
+   **Note**: The JWT_SECRET can be any string, but for security, use a long random string (32+ characters). You can generate one using:
+
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
    ```
 
 4. Start the server:
@@ -114,10 +121,49 @@ Choose the option that best fits your security requirements and deployment envir
 
 ## 🔒 Security Benefits
 
-- **CHATFLOW_ID Protection**: The CHATFLOW_ID is never exposed to the client-side, preventing unauthorized access.
+- **JWT Encryption**: Your CHATFLOW_ID is encrypted and signed using JWT, making it impossible to tamper with.
 - **Server-Side Proxy**: All API requests are routed through the server, preventing direct client access to the Flowise API.
-- **Token System**: Implements a token-based system for secure communication between client and server.
-- **Environment Variable Usage**: Sensitive data is stored in environment variables, not in the code.
+- **24-Hour Token Expiration**: JWT tokens automatically expire after 24 hours for enhanced security.
+- **Environment Variable Usage**: Sensitive data (CHATFLOW_ID, JWT_SECRET) is stored in environment variables, not in the code.
+
+## 🔑 JWT Token Implementation
+
+ToiFlow uses JSON Web Tokens (JWT) to secure the communication between the client and server:
+
+### How it Works
+
+1. **Initial Setup**
+   - Add your `JWT_SECRET` to the `.env` file:
+
+   ```bash
+   JWT_SECRET=your_long_random_string_here # At least 32 characters
+   ```
+
+2. **Token Generation**
+   - When the chatbot loads, the server creates a JWT token containing your encrypted `CHATFLOW_ID`
+   - This token expires after 24 hours for security
+   - Only the encrypted token is sent to the frontend, never your actual `CHATFLOW_ID`
+
+3. **Token Usage**
+   - The frontend uses this token for all API calls
+   - Your server verifies the token and extracts the real `CHATFLOW_ID` for Flowise API calls
+   - If the token expires, the chatbot will automatically refresh on page reload
+
+### Benefits
+
+- 🔒 Your `CHATFLOW_ID` stays secure on the server
+- ⏰ Tokens expire automatically after 24 hours
+- 🔄 Simple refresh mechanism (just reload the page)
+- 🛡️ Cryptographically signed tokens prevent tampering
+
+### Token Refresh
+
+Users don't need to manage tokens manually. The system will:
+- Generate a new token on page load
+- Handle expired tokens gracefully
+- Maintain security without user intervention
+
+This implementation ensures your Flowise chatbot remains secure while providing a good user experience.
 
 ## 🎨 Customization
 
