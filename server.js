@@ -18,6 +18,13 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(express.static("public"));
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  next();
+});
+
 app.get('/api/config', (req, res) => {
   const chatflowId = process.env.CHATFLOW_ID;
   if (!chatflowId) {
@@ -33,9 +40,20 @@ app.get('/api/v1/chatflows-streaming', (req, res) => {
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive'
+    'Connection': 'keep-alive',
+    'Access-Control-Allow-Origin': '*'
   });
-  res.end();
+  
+  res.write('data: connected\n\n');
+  
+  const heartbeat = setInterval(() => {
+    res.write(':\n\n'); 
+  }, 30000);
+  
+  req.on('close', () => {
+    clearInterval(heartbeat);
+    res.end();
+  });
 });
 
 app.get('/api/v1/public-chatbotConfig', (req, res) => {
