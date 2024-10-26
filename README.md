@@ -57,6 +57,15 @@ Choose the option that best fits your security requirements and deployment envir
 - Node.js (version 14 or higher)
 - npm (Node Package Manager)
 
+### Dependencies
+- axios ^1.7.7 - HTTP client for making API requests
+- cors ^2.8.5 - Cross-Origin Resource Sharing middleware
+- dotenv ^16.4.5 - Environment variable management
+- express ^4.21.1 - Web application framework
+- form-data ^4.0.1 - Form data handling
+- jsonwebtoken ^9.0.2 - JWT implementation
+- multer ^1.4.5-lts.1 - File upload handling
+
 ## 🚀 Installation
 
 1. Clone the repository:

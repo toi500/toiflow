@@ -1,6 +1,4 @@
 body {
-    font-family: 'Space Mono', monospace, Arial, sans-serif;
-    word-spacing: -4px;
     display: flex;
     justify-content: center;
     align-items: center;
