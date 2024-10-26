@@ -17,6 +17,11 @@ const API_HOST = process.env.API_HOST;
 const CHATFLOW_ID = process.env.CHATFLOW_ID;
 
 if (!JWT_SECRET || !API_HOST || !CHATFLOW_ID) {
+  console.error("Error: Missing required environment variables.");
+  if (!JWT_SECRET) console.error(" - JWT_SECRET is not defined.");
+  if (!API_HOST) console.error(" - API_HOST is not defined.");
+  if (!CHATFLOW_ID) console.error(" - CHATFLOW_ID is not defined.");
+  console.error("Please set these variables in your .env file.");
   process.exit(1);
 }
 
